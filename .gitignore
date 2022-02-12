@@ -1,6 +1,10 @@
 *.pyc
 migrations
-__pycache__
+media
+uploads
 *.sqlite3
+Pipfile
+Pipfile.*
+.vscode
 .DS_Store
 env
