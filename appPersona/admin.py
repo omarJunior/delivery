@@ -22,11 +22,10 @@ class PersonaAdmin(admin.ModelAdmin):
     list_display = ('id','obj_user',
                         'tipoIdentificacion',
                         'numeroIdentificacion',
-                        'nombres',
-                        'apellidos',
+                        'get_full_name_persona',
                         'correo_electronico',
                         'edad',
-                        'rol_persona',
+                        'get_rol_persona',
                         'sys_active',)
     list_filter = ('nombres', 'apellidos', 'correo_electronico')
 
