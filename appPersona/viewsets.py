@@ -21,6 +21,7 @@ class PersonaViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['post'], url_path="registro")
     def registro(self, request):
+        #xd
         pass
 
 class ApiCustomAuthToken(APIView):
