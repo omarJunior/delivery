@@ -1,10 +1,11 @@
+.env
+*/__pycache__/*
+__pycache__
 *.pyc
 migrations
 media
-uploads
-*.sqlite3
-Pipfile
-Pipfile.*
-.vscode
 .DS_Store
+*.sqlite3
 env
+old_icons
+uploads
