@@ -7,6 +7,10 @@ from rest_framework.decorators import action
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.contrib.auth.models import User, Group
+from django.contrib.auth.hashers import make_password
+
+from appConfiguracion.models import TipoIndetificacion
 
 from .models import Cliente, Persona
 from .serializers import ClienteSerializer, PersonaSerializer
@@ -19,11 +23,41 @@ class PersonaViewSet(viewsets.ModelViewSet):
     queryset = Persona.objects.all().order_by('id')
     serializer_class = PersonaSerializer
 
+    #Creacion para usuarios con roles
     @action(detail=False, methods=['post'], url_path="registro")
     def registro(self, request):
-        #xd
+        usuario = request.data['usuario'] 
         nombres = request.data['nombres']
         apellidos = request.data['apellidos']
+        tipoIdentificacion = request.data['tipoIdentificacion']
+        numeroIdentificacion = request.data['numeroIdentificacion']
+        correo_electronico = request.data['correo_electronico']
+        password = request.data['password']
+        edad = request.data['edad']
+        rol_persona = request.data['rol_persona']
+
+        user = User()
+        user.username = usuario
+        user.first_name = nombres
+        user.last_name = apellidos
+        user.email = correo_electronico
+        user.password = make_password(password)
+        user.save()
+        persona = Persona()
+        persona.obj_user = user
+        persona.tipoIdentificacion = TipoIndetificacion()
+        persona.tipoIdentificacion.id = tipoIdentificacion
+        persona.numeroIdentificacion = numeroIdentificacion
+        persona.edad = edad
+        try:
+            rol_ = Group.objects.get(pk = rol_persona)
+        except:
+            rol_ = None
+        if rol_ is not None:
+            nombre_rol = rol_.name
+            persona.rol_persona = nombre_rol
+        persona.save()
+        
 
 class ApiCustomAuthToken(APIView):
     #Permita ingresar a esta vista sin necesidad de estar autenticado
