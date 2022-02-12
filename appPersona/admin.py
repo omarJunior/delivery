@@ -1,0 +1,34 @@
+from django.contrib import admin
+from .models import Cliente, Persona
+
+
+# Register your models here.
+class ClienteAdmin(admin.ModelAdmin):
+    list_display = ('id', 'codigo',
+                    'tipoIdentificacion',
+                    'numeroIdentificacion',
+                    'nombres',
+                    'apellidos',
+                    'correo_electronico',
+                    'fecha_nacimiento',
+                    'edad',
+                    'direccion',
+                    'telefono',
+                    'descuento',
+                    'sys_active',)
+    list_filter = ('codigo', 'nombres', 'apellidos')
+
+class PersonaAdmin(admin.ModelAdmin):
+    list_display = ('id','obj_user',
+                        'tipoIdentificacion',
+                        'numeroIdentificacion',
+                        'nombres',
+                        'apellidos',
+                        'correo_electronico',
+                        'edad',
+                        'rol_persona',
+                        'sys_active',)
+    list_filter = ('nombres', 'apellidos', 'correo_electronico')
+
+admin.site.register(Cliente, ClienteAdmin)
+admin.site.register(Persona, PersonaAdmin)
