@@ -42,6 +42,8 @@ class Persona(models.Model):
     apellidos = models.CharField(verbose_name="Apellidos", max_length=100, null=True, blank=True)
     correo_electronico = models.EmailField(verbose_name="Email", null=True, blank=True, unique=True)
     edad = models.IntegerField(verbose_name="Edad", null=True, blank=True)
+    direccion = models.CharField(max_length=60, null=True, blank=True)
+    telefono = models.CharField(max_length=60, null=True, blank=True)
     rol_persona = models.ManyToManyField(Group)
     sys_active = models.BooleanField(default=True)
 
