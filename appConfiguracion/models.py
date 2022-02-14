@@ -1,4 +1,3 @@
-import utils
 from django.db import models
 
 # Create your models here.
@@ -65,7 +64,7 @@ class Ingrediente(models.Model):
         return self.descripcion + " Cantidad: " + str(self.cantidad)
 
 class FormaPago(models.Model):
-    nombre = models.CharField(verbose_name="Tipo de pago", max_length=100, choices= utils.FORMA_DE_PAGOS, null=True, blank=True)
+    nombre = models.CharField(verbose_name="Tipo de pago", max_length=100, null=True, blank=True)
     otros_detalles = models.CharField(verbose_name="Detalles", max_length=55, null=True, blank=True)
     sys_active = models.BooleanField(default=True)
     sys_fechaCreacion = models.DateTimeField(auto_now_add=True)
