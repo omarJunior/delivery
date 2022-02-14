@@ -6,7 +6,7 @@ from django.contrib.auth.models import User, Group
 class Cliente(models.Model):
     codigo = models.CharField(verbose_name="Codigo del cliente", max_length=55, null=True, blank=True)
     tipoIdentificacion = models.ForeignKey(TipoIndetificacion, verbose_name="Tipo de identificacion", null=True, blank=True, on_delete=models.SET_NULL)
-    numeroIdentificacion = models.CharField("Numero de identificacion", max_length=60, null=True, blank=True)
+    numeroIdentificacion = models.CharField(verbose_name="Numero de identificacion", max_length=60, null=True, blank=True)
     nombres = models.CharField(verbose_name="Nombres", max_length=100, null=True, blank=True)
     apellidos = models.CharField(verbose_name="Apellidos", max_length=100, null=True, blank=True)
     correo_electronico = models.EmailField(verbose_name= "Email", null=True, blank=True, unique=True)
@@ -15,6 +15,7 @@ class Cliente(models.Model):
     direccion = models.CharField(verbose_name="Direccion", max_length=50, null=True, blank=True)
     telefono = models.CharField(verbose_name="Telefono", max_length=50, null=True, blank=True)
     descuento = models.FloatField(verbose_name="Descuento", null=True, blank=True)
+    obj_user_referenciado = models.ForeignKey(User, verbose_name="Usuario referenciado", null=True, blank=True, on_delete=models.SET_NULL)
 
     @property
     def get_full_name(self):
@@ -30,7 +31,7 @@ class Cliente(models.Model):
         verbose_name_plural = "Clientes"
 
     def __str__(self):
-        return self.codigo + " " + self.get_full_name()
+        return self.codigo + " " + self.get_full_name
 
 #Hacer referencia al auth user
 class Persona(models.Model):
