@@ -1,4 +1,3 @@
-from asyncio import exceptions
 from django.http.response import HttpResponse
 from django.contrib.auth import authenticate
 from rest_framework import viewsets, status, exceptions
@@ -18,6 +17,39 @@ from .serializers import ClienteSerializer, PersonaSerializer
 class ClienteViewSet(viewsets.ModelViewSet):
     queryset = Cliente.objects.all().order_by('id')
     serializer_class = ClienteSerializer
+
+    #Creacion de un cliente
+    @action(detail=False, methods=['post'], url_path="registro-cliente", url_name="registro_cliente")
+    def registro_cliente(self, request):
+        id_user = request.data['id_user']
+        codigo = request.data['codigo']
+        tipoIdentificacion = request.data['tipoIndentificacion']
+        numeroIdentificacion = request.data['numeroIdentificacion']
+        nombres = request.data['nombres']
+        apellidos = request.data['apellidos']
+        correo_electronico = request.data['correo_electronico']
+        fecha_nacimiento = request.data['fecha_nacimiento']
+        edad = request.data['edad']
+        direccion = request.data['direccion']
+        telefono = request.data['telefono']
+        descuento = request.data['descuento']
+        
+        obj_cliente = Cliente()
+        obj_cliente.codigo = codigo
+        obj_cliente.tipoIdentificacion = tipoIdentificacion
+        obj_cliente.numeroIdentificacion = numeroIdentificacion
+        obj_cliente.nombres = nombres
+        obj_cliente.apellidos = apellidos
+        obj_cliente.correo_electronico = correo_electronico
+        obj_cliente.fecha_nacimiento = fecha_nacimiento
+        obj_cliente.edad = edad
+        obj_cliente.direccion = direccion
+        obj_cliente.telefono = telefono
+        obj_cliente.descuento = descuento
+        obj_cliente.obj_user_referenciado = User()
+        obj_cliente.obj_user_referenciado.id = id_user
+        obj_cliente.save()
+        
 
 class PersonaViewSet(viewsets.ModelViewSet):
     queryset = Persona.objects.all().order_by('id')
@@ -106,6 +138,7 @@ class ApiCustomAuthToken(APIView):
                 }
                 return Response(userDict, status=status.HTTP_200_OK)
             else:
+                print(user)
                 raise exceptions.AuthenticationFailed("El usuario no se encuentra activo")
         else:
             raise exceptions.AuthenticationFailed("Verifique su usuario y contraseña")
