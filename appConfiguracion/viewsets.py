@@ -21,7 +21,7 @@ class StockViewSet(viewsets.ModelViewSet):
     serializer_class = StockSerializer
 
 class IngredienteViewSet(viewsets.ModelViewSet):
-    queryset = Rubro.objects.all().order_by('id')
+    queryset = Ingrediente.objects.all().order_by('id')
     serializer_class = IngredienteSerializer
 
 class FormaPagoViewSet(viewsets.ModelViewSet):
