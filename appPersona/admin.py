@@ -15,6 +15,7 @@ class ClienteAdmin(admin.ModelAdmin):
                     'direccion',
                     'telefono',
                     'descuento',
+                    'obj_user_referenciado',
                     'sys_active',)
     list_filter = ('codigo', 'nombres', 'apellidos')
 
