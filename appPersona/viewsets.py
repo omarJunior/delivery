@@ -54,6 +54,12 @@ class ClienteViewSet(viewsets.ModelViewSet):
 class PersonaViewSet(viewsets.ModelViewSet):
     queryset = Persona.objects.all().order_by('id')
     serializer_class = PersonaSerializer
+    permission_classes = (AllowAny, )
+
+    @action(detail=False, methods=['get'], url_path="get_grupos", url_name="get-grupos")
+    def get_grupos(self, request):
+        grupos = Group.objects.all().values()
+        return Response(grupos)
 
     #Creacion para usuarios con roles
     @action(detail=False, methods=['post'], url_path="registro")
