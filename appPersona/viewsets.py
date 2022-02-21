@@ -62,39 +62,56 @@ class PersonaViewSet(viewsets.ModelViewSet):
         return Response(grupos)
 
     #Creacion para usuarios con roles
-    @action(detail=False, methods=['post'], url_path="registro")
+    @action(detail=False, methods=['post'], url_path="register_persona", url_name="register-persona")
     def registro(self, request):
-        usuario = request.data['usuario'] 
-        nombres = request.data['nombres']
-        apellidos = request.data['apellidos']
         tipoIdentificacion = request.data['tipoIdentificacion']
         numeroIdentificacion = request.data['numeroIdentificacion']
+        nombres = request.data['nombres']
+        apellidos = request.data['apellidos']
         correo_electronico = request.data['correo_electronico']
-        password = request.data['password']
         edad = request.data['edad']
+        direccion = request.data['direccion']
+        telefono = request.data['telefono'] 
+        password = request.data['password']
         rol_persona = request.data['rol_persona']
 
         user = User()
-        user.username = usuario
+        user.username = correo_electronico
         user.first_name = nombres
         user.last_name = apellidos
         user.email = correo_electronico
         user.password = make_password(password)
         user.save()
+        try:
+            grupo_obj = Group.objects.get(id = rol_persona)
+        except:
+            grupo_obj = None
+        
+        if grupo_obj is not None:
+            user.groups.add(grupo_obj)
+        user.save()
+
         persona = Persona()
         persona.obj_user = user
         persona.tipoIdentificacion = TipoIndetificacion()
         persona.tipoIdentificacion.id = tipoIdentificacion
         persona.numeroIdentificacion = numeroIdentificacion
+        persona.nombres = nombres
+        persona.apellidos = apellidos
+        persona.correo_electronico = correo_electronico
         persona.edad = edad
-        try:
-            rol_ = Group.objects.get(pk = rol_persona)
-        except:
-            rol_ = None
-        if rol_ is not None:
-            nombre_rol = rol_.name
-            persona.rol_persona = nombre_rol
+        persona.direccion = direccion
+        persona.telefono = telefono
         persona.save()
+        try:
+            grupo_rol = Group.objects.filter(id = rol_persona)
+        except:
+            grupo_rol = None
+        if grupo_rol is not None:
+            #Instancias de QuerySet[]
+            persona.rol_persona.set(grupo_rol)
+        persona.save()
+        return Response({'msg': 'Datos guardados correctamente'})
         
 
 class ApiCustomAuthToken(APIView):
@@ -112,6 +129,7 @@ class ApiCustomAuthToken(APIView):
             username = username,
             password = password
         )
+        print(user)
         if user is not None:
             if user.is_active:
                 #generamos el token
@@ -132,7 +150,6 @@ class ApiCustomAuthToken(APIView):
 
                 userDict = {
                     "id": user.pk,
-                    "id_persona": id_persona,
                     "username": user.username,
                     "correo_electronico": user.email,
                     "fullname": user.get_full_name(),
@@ -142,12 +159,13 @@ class ApiCustomAuthToken(APIView):
                     "refresh": str(refresh),
                     "access_token": str(refresh.access_token)
                 }
-                return Response(userDict, status=status.HTTP_200_OK)
+                return Response({'datos': userDict}, status=status.HTTP_200_OK)
             else:
-                print(user)
-                raise exceptions.AuthenticationFailed("El usuario no se encuentra activo")
+                return Response({'error': 'El usuario no se encuentra activo'})
+                #raise exceptions.AuthenticationFailed("El usuario no se encuentra activo")
         else:
-            raise exceptions.AuthenticationFailed("Verifique su usuario y contraseña")
+            return Response({'error': 'Verifique su usuario y contraseña'})
+            #raise exceptions.AuthenticationFailed("Verifique su usuario y contraseña")
 
     def get(self, request, format=None):
         if request.user.is_authenticated:
