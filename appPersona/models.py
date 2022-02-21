@@ -69,5 +69,5 @@ class Persona(models.Model):
         verbose_name_plural = "Personas"
 
     def __str__(self):
-        return self.get_rol_persona + " " + self.get_full_name_persona
+        return self.get_full_name_persona
 
