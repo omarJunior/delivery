@@ -1,0 +1,119 @@
+{% extends 'admin/login.html' %}
+{% load static %}
+
+{% block extrastyle %}
+    {{ block.super }}
+
+    <style type="text/css">
+
+        body.login {
+            color: #332d2d;
+            background: transparent;
+        }
+
+        h3{
+            color: #10305b;
+            letter-spacing: 0.5px;
+        }
+
+        /*     html {
+            background-image: url('/static/images/fondoLoginAdmin.jpg');
+            background-size: cover;
+            /* background-position: center;
+            background-repeat: no-repeat;
+        } */
+
+        html {
+
+            background-color: #10305b;
+
+        }
+
+        #container {
+            background-color:white !important;
+            border-radius: 20px !important;
+            box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2);
+            transition: 0.3s;
+        }
+
+        #container:hover {
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        #footer {
+            display: none;
+        }
+
+        body.login .submit-row input[type='submit'] {
+            width: 100%;
+            color: #fff;
+            background-color: #10305b;
+            border-color: #3066ad;
+            box-shadow: 0 2px 6px 0 #09079680;
+            text-transform: none !important;
+        }
+
+        body.login .submit-row input[type='submit']:active {
+            color: #fff;
+            background-color: #10305b;
+            border-color: #3061a1;;
+        }
+
+        body.login .submit-row input[type='submit']:hover {
+            transition: 0.5 all ms;
+            color: #fff;
+            background-color: #1a3e6d;
+            border-color: #163052;
+            cursor: pointer;
+        }
+
+        body.login .submit-row input[type='submit']:active:hover {
+            color: #fff;
+            background-color: #6b8dd6;
+            border-color: #659de9;
+        }
+
+        body.login .submit-row input[type='submit']:focus {
+            color: #fff;
+            background-color: #1a3e6d;
+            border-color: #163052;
+            box-shadow: 0 0 0 0.15rem rgba(32, 19, 110, 0.5);
+        }
+
+        /* body.login .form-row input:not([type='hidden']):not(:focus) {
+            background-color: #fff;
+            border-color:rgba(0, 0, 0, 0.15);
+        } */
+
+        body.login .form-row #id_username, body.login .form-row #id_password {
+            border: 1px solid #ced4da;
+        }
+
+        body.login .form-row #id_username:focus, body.login .form-row #id_password:focus {
+            color: #495057;
+            background-color: #fff;
+            border-color: #b9bfc4;
+            outline: 0;
+            box-shadow: none;
+        }
+
+        h3 {
+            font-size: 1.17em !important;
+        }
+
+        .form-row input:hover{
+            border: .5px solid #1a3e6d !important;
+            transition: 2s;
+        }
+
+    </style>
+
+{% endblock %}
+
+{% block content %}
+
+<!-- <img src="{% static 'images/logo_clinica_femto.PNG' %}" alt="" style="width:55%;display:block;margin:0 auto 25px;"> -->
+<div style="text-align:center;margin-bottom: 25px;"><h3>Bienvenido</h3><p>Inicia sesión para continuar.</p></div>
+{{ block.super }}
+
+{% endblock %}
