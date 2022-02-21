@@ -45,6 +45,8 @@ class PersonaSerializer(serializers.ModelSerializer):
             'apellidos',
             'correo_electronico',
             'edad',
+            'direccion',
+            'telefono',
             'get_rol_persona',
         ]
         read_only_fields = ('tipoIdentificacion', 'obj_user',) 
