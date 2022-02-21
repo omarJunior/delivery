@@ -1,4 +1,5 @@
 from rest_framework import viewsets
+from rest_framework.permissions import AllowAny
 from .serializers import (
     TipoIdentificacionSerializer,
     RubroSerializer,
@@ -11,6 +12,7 @@ from .models import TipoIndetificacion, Rubro, Stock, Ingrediente, FormaPago
 class TipoIdentificacionViewSet(viewsets.ModelViewSet):
     queryset = TipoIndetificacion.objects.all().order_by('id')
     serializer_class = TipoIdentificacionSerializer
+    permission_classes = (AllowAny,)
 
 class RubroViewSet(viewsets.ModelViewSet):
     queryset = Rubro.objects.all().order_by('id')
