@@ -28,7 +28,7 @@ class PersonaAdmin(admin.ModelAdmin):
                         'edad',
                         'get_rol_persona',
                         'sys_active',)
-    list_filter = ('nombres', 'apellidos', 'correo_electronico')
+    list_filter = ('nombres', 'apellidos', 'correo_electronico', 'rol_persona')
 
 admin.site.register(Cliente, ClienteAdmin)
 admin.site.register(Persona, PersonaAdmin)
