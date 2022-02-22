@@ -54,11 +54,15 @@ class Persona(models.Model):
     @property
     def get_rol_persona(self):
         grupos = ""
-        grupo = self.obj_user.groups.all()
-        if grupo.count() > 0:
-            for i in grupo:
-                grupos  = grupos + i.name
-        return grupos
+        try:
+            grupo = self.obj_user.groups.all()
+            print(grupo)
+            if grupo.count() > 0:
+                for i in grupo:
+                    grupos  = grupos + i.name
+            return grupos
+        except:
+            return grupos
 
     sys_fechaCreacion = models.DateTimeField(auto_now_add= True)
     sys_fechaActualizacion = models.DateTimeField(auto_now = True)
