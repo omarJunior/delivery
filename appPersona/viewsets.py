@@ -54,15 +54,14 @@ class ClienteViewSet(viewsets.ModelViewSet):
 class PersonaViewSet(viewsets.ModelViewSet):
     queryset = Persona.objects.all().order_by('id')
     serializer_class = PersonaSerializer
-    permission_classes = (AllowAny, )
-
-    @action(detail=False, methods=['get'], url_path="get_grupos", url_name="get-grupos")
+    
+    @action(detail=False, methods=['get'], url_path="get_grupos", url_name="get-grupos", permission_classes = (AllowAny, ))
     def get_grupos(self, request):
         grupos = Group.objects.all().values()
         return Response(grupos)
 
     #Creacion para usuarios con roles
-    @action(detail=False, methods=['post'], url_path="register_persona", url_name="register-persona")
+    @action(detail=False, methods=['post'], url_path="register_persona", url_name="register-persona" , permission_classes = (AllowAny, ))
     def registro(self, request):
         tipoIdentificacion = request.data['tipoIdentificacion']
         numeroIdentificacion = request.data['numeroIdentificacion']
@@ -129,7 +128,6 @@ class ApiCustomAuthToken(APIView):
             username = username,
             password = password
         )
-        print(user)
         if user is not None:
             if user.is_active:
                 #generamos el token
