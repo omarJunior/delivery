@@ -31,7 +31,9 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-PRIORITY_APPS = []
+PRIORITY_APPS = [
+    'jet',
+]
 
 CORE_APPS = [
     'django.contrib.admin',
@@ -184,6 +186,7 @@ SWAGGER_SETTINGS = {
    }
 }
 
+#Se vence en 30 dias
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=720),
 }
