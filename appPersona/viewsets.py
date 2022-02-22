@@ -63,6 +63,7 @@ class PersonaViewSet(viewsets.ModelViewSet):
     #Creacion para usuarios con roles
     @action(detail=False, methods=['post'], url_path="register_persona", url_name="register-persona" , permission_classes = (AllowAny, ))
     def registro(self, request):
+        username = request.data['username']
         tipoIdentificacion = request.data['tipoIdentificacion']
         numeroIdentificacion = request.data['numeroIdentificacion']
         nombres = request.data['nombres']
@@ -74,8 +75,12 @@ class PersonaViewSet(viewsets.ModelViewSet):
         password = request.data['password']
         rol_persona = request.data['rol_persona']
 
+        user_existe = User.objects.filter(username = username)
+        email_existe = User.objects.filter(email = correo_electronico)
+        if user_existe.count() > 0 or email_existe.count() > 0:
+            return Response({'error': 'Ya se encuentra registrado ese username o email'})
         user = User()
-        user.username = correo_electronico
+        user.username = username
         user.first_name = nombres
         user.last_name = apellidos
         user.email = correo_electronico
