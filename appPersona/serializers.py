@@ -31,14 +31,17 @@ class ClienteSerializer(serializers.ModelSerializer):
         return ""
         
 class PersonaSerializer(serializers.ModelSerializer):
-    obj_user = serializers.SerializerMethodField(method_name="get_full_name")
+    full_name = serializers.SerializerMethodField(method_name="get_full_name")
+    username = serializers.SerializerMethodField(method_name="get_user_name")
+
     tipoIdentificacion = serializers.CharField(source = "tipoIdentificacion.descripcion")
 
     class Meta:
         model = Persona
         fields = [
             'id',
-            'obj_user',
+            'full_name',
+            'username',
             'tipoIdentificacion',
             'numeroIdentificacion',
             'nombres',
@@ -54,5 +57,10 @@ class PersonaSerializer(serializers.ModelSerializer):
     def get_full_name(self, obj):
         if obj.obj_user:
             return obj.obj_user.get_full_name()
+        return ""
+
+    def get_user_name(self, obj):
+        if obj.obj_user:
+            return obj.obj_user.username
         return ""
 
