@@ -50,7 +50,7 @@ class Ingrediente(models.Model):
     cantidad = models.IntegerField(verbose_name="Cantidad", null=True, blank=True)
     unidad_medida = models.CharField(verbose_name="Unidad medida", max_length=30, null=True, blank=True)
     costo = models.FloatField(verbose_name="Costo", null=True, blank=True)
-    obj_stock = models.ForeignKey(Stock, verbose_name="Stock", null=True, blank=True, on_delete=models.SET_NULL)
+    obj_stock = models.ForeignKey(Stock, verbose_name="Stock", null=True, blank=True, on_delete=models.SET_NULL, related_name="stock_ingrediente")
     sys_active = models.BooleanField(default=True)
     sys_fechaCreacion = models.DateTimeField(auto_now_add=True)
     sys_fechaActualizacion = models.DateTimeField(auto_now = True)
