@@ -15,7 +15,7 @@ class Cliente(models.Model):
     direccion = models.CharField(verbose_name="Direccion", max_length=50, null=True, blank=True)
     telefono = models.CharField(verbose_name="Telefono", max_length=50, null=True, blank=True)
     descuento = models.FloatField(verbose_name="Descuento", null=True, blank=True)
-    obj_user_referenciado = models.ForeignKey(User, verbose_name="Usuario referenciado", null=True, blank=True, on_delete=models.SET_NULL)
+    obj_user_referenciado = models.ForeignKey(User, verbose_name="Usuario referenciado", null=True, blank=True, on_delete=models.SET_NULL, related_name="user_cliente")
 
     @property
     def get_full_name(self):
@@ -35,7 +35,7 @@ class Cliente(models.Model):
 
 #Hacer referencia al auth user
 class Persona(models.Model):
-    obj_user = models.ForeignKey(User, verbose_name="Usuario registrado", null=True, blank=True, on_delete=models.SET_NULL)
+    obj_user = models.ForeignKey(User, verbose_name="Usuario registrado", null=True, blank=True, on_delete=models.SET_NULL, related_name="user_persona")
     tipoIdentificacion = models.ForeignKey(TipoIndetificacion, verbose_name="Tipo de identificacion", null=True, blank=True, on_delete=models.SET_NULL)
     numeroIdentificacion = models.CharField(verbose_name="Numero de identificacion", max_length=60, null=True, blank=True)
     nombres = models.CharField(verbose_name="Nombres", max_length=100, null=True, blank=True)
@@ -56,7 +56,6 @@ class Persona(models.Model):
         grupos = ""
         try:
             grupo = self.obj_user.groups.all()
-            print(grupo)
             if grupo.count() > 0:
                 for i in grupo:
                     grupos  = grupos + i.name
