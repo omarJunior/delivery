@@ -12,7 +12,7 @@ from django.contrib.auth.hashers import make_password
 from appConfiguracion.models import TipoIndetificacion
 
 from .models import Cliente, Persona
-from .serializers import ClienteSerializer, PersonaSerializer
+from .serializers import ClienteSerializer, PersonaSerializer, UserSerializers
 
 class ClienteViewSet(viewsets.ModelViewSet):
     queryset = Cliente.objects.all().order_by('id')
@@ -187,5 +187,17 @@ class ApiCustomAuthToken(APIView):
             return Response(userDict)
         return Response({'detail': "El usuario no se encuentra autenticado"}, status=status.HTTP_401_UNAUTHORIZED)
 
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all().order_by('-is_active')
+    serializer_class = UserSerializers
+
+    def get_queryset(self):
+        qs = User.objects.all().order_by('-is_active')
+        id = self.request.query_params.get('id_user')
+        if id is not None:
+            qs = qs.filter(user_persona__obj_user = id)
+            return qs
+        else:
+            return qs
 
 
