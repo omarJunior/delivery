@@ -4,7 +4,8 @@ from .models import Cliente, Persona
 
 # Register your models here.
 class ClienteAdmin(admin.ModelAdmin):
-    list_display = ('id', 'codigo',
+    list_display = ('id', 
+                    'codigo',
                     'tipoIdentificacion',
                     'numeroIdentificacion',
                     'nombres',
@@ -20,14 +21,17 @@ class ClienteAdmin(admin.ModelAdmin):
     list_filter = ('codigo', 'nombres', 'apellidos')
 
 class PersonaAdmin(admin.ModelAdmin):
-    list_display = ('id','obj_user',
-                        'tipoIdentificacion',
-                        'numeroIdentificacion',
-                        'get_full_name_persona',
-                        'correo_electronico',
-                        'edad',
-                        'get_rol_persona',
-                        'sys_active',)
+    list_display = ('id',
+                    'obj_user',
+                    'tipoIdentificacion',
+                    'numeroIdentificacion',
+                    'get_full_name_persona',
+                    'correo_electronico',
+                    'edad',
+                    'direccion',
+                    'telefono',
+                    'get_rol_persona',
+                    'sys_active',)
     list_filter = ('nombres', 'apellidos', 'correo_electronico', 'rol_persona')
 
 admin.site.register(Cliente, ClienteAdmin)
