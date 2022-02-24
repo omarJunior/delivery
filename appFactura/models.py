@@ -8,8 +8,8 @@ from appConfiguracion.models import FormaPago, Rubro, Stock, Ingrediente
 class Factura(models.Model):
     nro_comprobante = models.CharField(max_length=100, null=True, blank=True)
     fecha = models.DateField(auto_now=True,null=True, blank=True)
-    obj_cliente = models.ForeignKey(Cliente, verbose_name="Cliente", null=True, blank=True, on_delete=models.SET_NULL)
-    obj_forma_pago = models.ForeignKey(FormaPago, verbose_name="Forma de pago", null=True, blank=True, on_delete=models.SET_NULL)
+    obj_cliente = models.ForeignKey(Cliente, verbose_name="Cliente", null=True, blank=True, on_delete=models.SET_NULL, related_name="cliente_factura")
+    obj_forma_pago = models.ForeignKey(FormaPago, verbose_name="Forma de pago", null=True, blank=True, on_delete=models.SET_NULL, related_name="cliente_pago")
     iva = models.FloatField(null=True, blank=True)
     descuento = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     sys_active = models.BooleanField(default=True)
@@ -29,8 +29,8 @@ class Producto(models.Model):
     costo = models.FloatField(null=True, blank=True)
     precio_sin_iva = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     precio_final = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    obj_rubro = models.ForeignKey(Rubro, verbose_name="Rubro", null=True, blank=True, on_delete=models.SET_NULL)
-    obj_stock = models.ForeignKey(Stock, verbose_name="Stock", null=True, blank=True, on_delete=models.SET_NULL)
+    obj_rubro = models.ForeignKey(Rubro, verbose_name="Rubro", null=True, blank=True, on_delete=models.SET_NULL, related_name="rubro_producto")
+    obj_stock = models.ForeignKey(Stock, verbose_name="Stock", null=True, blank=True, on_delete=models.SET_NULL, related_name="stock_producto")
     tamanio = models.CharField(max_length=60, choices=utils.TAMANIO_PRODUCTO)
     sys_active = models.BooleanField(default=True)
     sys_fechaCreacion = models.DateTimeField(auto_now_add=True)
@@ -46,8 +46,8 @@ class Producto(models.Model):
 
 
 class Receta(models.Model):
-    obj_ingrediente = models.ForeignKey(Ingrediente, verbose_name="Ingrediente", null=True, blank=True, on_delete=models.SET_NULL)
-    obj_producto = models.ForeignKey(Producto, verbose_name="Producto", null=True, blank=True, on_delete=models.SET_NULL)
+    obj_ingrediente = models.ForeignKey(Ingrediente, verbose_name="Ingrediente", null=True, blank=True, on_delete=models.SET_NULL, related_name="ingrediente_receta")
+    obj_producto = models.ForeignKey(Producto, verbose_name="Producto", null=True, blank=True, on_delete=models.SET_NULL, related_name="producto_receta")
     sys_active = models.BooleanField(default=True)
     sys_fechaCreacion = models.DateTimeField(auto_now_add=True)
     sys_fechaActualizacion = models.DateTimeField(auto_now = True)
