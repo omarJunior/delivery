@@ -1,5 +1,75 @@
 from rest_framework import serializers
-from .models import Cliente, Persona
+from .models import Cliente, Persona, User
+
+
+class UserSerializers(serializers.ModelSerializer):
+    grupo = serializers.SerializerMethodField(method_name="get_name_grupo")
+    tipoIdentificacion = serializers.SerializerMethodField(method_name = "get_tipo_identificacion")
+    numeroIdentificacion = serializers.SerializerMethodField(method_name = "get_numero_identificacion")
+    edad = serializers.SerializerMethodField(method_name = "get_edad")
+    direccion = serializers.SerializerMethodField(method_name = "get_direccion")
+    telefono = serializers.SerializerMethodField(method_name = "get_telefono")
+
+    class Meta:
+        model = User
+        fields = [
+            'id',
+            'password',
+            'is_superuser',
+            'first_name',
+            'last_name',
+            'email',
+            'is_staff',
+            'is_active',
+            'date_joined',
+            'grupo',
+            'user_persona',
+            'tipoIdentificacion',
+            'numeroIdentificacion',
+            'edad',
+            'direccion',
+            'telefono',
+        ]
+
+        read_only_fields = ('grupo', 'tipoIdentificacion', 'numeroIdentificacion', 'edad', 'direccion', 'telefono',)
+
+
+    def get_name_grupo(self, obj):
+        name=""
+        if obj.groups:
+            for i in obj.groups.all():
+                name = name + i.name
+        return name
+        
+    def get_tipo_identificacion(self, obj):
+        if obj.user_persona:
+            for i in obj.user_persona.all():
+                return i.tipoIdentificacion.descripcion
+        return ""
+
+    def get_numero_identificacion(self, obj):
+        if obj.user_persona:
+            for i in obj.user_persona.all():
+                return i.numeroIdentificacion
+        return ""
+
+    def get_edad(self, obj):
+        if obj.user_persona:
+            for i in obj.user_persona.all():
+                return i.edad
+        return ""
+
+    def get_direccion(self, obj):
+        if obj.user_persona:
+            for i in obj.user_persona.all():
+                return i.direccion
+        return ""
+
+    def get_telefono(self, obj):
+        if obj.user_persona:
+            for i in obj.user_persona.all():
+                return i.telefono
+        return "" 
 
 class ClienteSerializer(serializers.ModelSerializer):
     tipoIdentificacion = serializers.CharField(source = "tipoIdentificacion.descripcion")
@@ -33,13 +103,14 @@ class ClienteSerializer(serializers.ModelSerializer):
 class PersonaSerializer(serializers.ModelSerializer):
     full_name = serializers.SerializerMethodField(method_name="get_full_name")
     username = serializers.SerializerMethodField(method_name="get_user_name")
-
     tipoIdentificacion = serializers.CharField(source = "tipoIdentificacion.descripcion")
+    obj_user = UserSerializers(many=False)
 
     class Meta:
         model = Persona
         fields = [
             'id',
+            'obj_user',
             'full_name',
             'username',
             'tipoIdentificacion',
@@ -64,3 +135,4 @@ class PersonaSerializer(serializers.ModelSerializer):
             return obj.obj_user.username
         return ""
 
+        
