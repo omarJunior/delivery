@@ -13,3 +13,23 @@ TAMANIO_PRODUCTO = (
     ('mediano', 'Mediano'),
     ('grande', 'Grande'),
 )
+
+CIUDADES = (
+    ('bogota', 'Bogota'),
+    ('medellin', 'Medellin'),
+    ('cali', 'Cali'),
+    ('cartagena', 'Cartagena'),
+    ('barranquilla', 'Barranquilla'),
+    ('cucuta', 'Cucuta'),
+    ('ibague', 'Ibague'),
+    ('pasto', 'Pasto'),
+    ('santa marta', 'Santa marta'),
+    ('tunja', 'Tunja'),
+    ('villavicencio', 'Villavicencio'),
+    ('pereira', 'Pereira'),
+    ('valledupar', 'Valledupar'),
+    ('monteria', 'Monteria'),
+    ('neiva', 'Neiva'),
+    ('manizales', 'Manizales'),
+    ('sincelejo', 'Sincelejo'),
+)
