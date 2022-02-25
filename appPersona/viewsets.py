@@ -71,9 +71,12 @@ class PersonaViewSet(viewsets.ModelViewSet):
         correo_electronico = request.data['correo_electronico']
         edad = request.data['edad']
         direccion = request.data['direccion']
+        ciudad = request.data['ciudad']
         telefono = request.data['telefono'] 
         password = request.data['password']
         rol_persona = request.data['rol_persona']
+        codigo_postal = request.data['codigo_postal']
+        descripcion = request.data['descripcion']
 
         user_existe = User.objects.filter(username = username)
         email_existe = User.objects.filter(email = correo_electronico)
@@ -105,7 +108,10 @@ class PersonaViewSet(viewsets.ModelViewSet):
         persona.correo_electronico = correo_electronico
         persona.edad = edad
         persona.direccion = direccion
+        persona.ciudad = ciudad
         persona.telefono = telefono
+        persona.codigo_postal = codigo_postal
+        persona.descripcion = descripcion
         persona.save()
         try:
             grupo_rol = Group.objects.filter(id = rol_persona)
@@ -195,9 +201,28 @@ class UserViewSet(viewsets.ModelViewSet):
         qs = User.objects.all().order_by('-is_active')
         id = self.request.query_params.get('id_user')
         if id is not None:
-            qs = qs.filter(user_persona__obj_user = id)
+            qs = qs.filter(pk = id)
             return qs
         else:
             return qs
+
+    @action(detail=False, methods=['put'], url_path="updated_user", url_name="updated-user")
+    def updated_user(self, request):
+        id_user = request.data['id']
+        username = request.data['username']
+        email = request.data['email']
+        first_name = request.data['first_name']
+        last_name = request.data['last_name']
+        tipoIdentificacion =  request.data['tipoIdentificacion']
+        numeroIdentificacion = request.data['numeroIdentificacion']
+        edad = request.data['edad']
+        direccion = request.data['direccion']
+        ciudad = request.data['ciudad']
+        telefono = request.data['telefono']
+        codigo_postal = request.data['codigo_postal']
+        descripcion = request.data['descripcion']
+        return Response({'msg': "xd"})
+
+
 
 
