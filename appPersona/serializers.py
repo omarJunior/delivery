@@ -8,7 +8,10 @@ class UserSerializers(serializers.ModelSerializer):
     numeroIdentificacion = serializers.SerializerMethodField(method_name = "get_numero_identificacion")
     edad = serializers.SerializerMethodField(method_name = "get_edad")
     direccion = serializers.SerializerMethodField(method_name = "get_direccion")
+    ciudad = serializers.SerializerMethodField(method_name="get_ciudad")
     telefono = serializers.SerializerMethodField(method_name = "get_telefono")
+    codigo_postal = serializers.SerializerMethodField(method_name="get_codigo_postal")
+    descripcion = serializers.SerializerMethodField(method_name="get_descripcion")
 
     class Meta:
         model = User
@@ -16,6 +19,7 @@ class UserSerializers(serializers.ModelSerializer):
             'id',
             'password',
             'is_superuser',
+            'username',
             'first_name',
             'last_name',
             'email',
@@ -23,15 +27,17 @@ class UserSerializers(serializers.ModelSerializer):
             'is_active',
             'date_joined',
             'grupo',
-            'user_persona',
             'tipoIdentificacion',
             'numeroIdentificacion',
             'edad',
             'direccion',
+            'ciudad',
             'telefono',
+            'codigo_postal',
+            'descripcion',
         ]
 
-        read_only_fields = ('grupo', 'tipoIdentificacion', 'numeroIdentificacion', 'edad', 'direccion', 'telefono',)
+        read_only_fields = ('grupo', 'tipoIdentificacion', 'numeroIdentificacion', 'edad', 'direccion', 'ciudad' 'telefono', 'codigo_postal', 'descripcion')
 
 
     def get_name_grupo(self, obj):
@@ -64,12 +70,30 @@ class UserSerializers(serializers.ModelSerializer):
             for i in obj.user_persona.all():
                 return i.direccion
         return ""
+    
+    def get_ciudad(self, obj):
+        if obj.user_persona:
+            for i in obj.user_persona.all():
+                return i.ciudad
+        return ""
 
     def get_telefono(self, obj):
         if obj.user_persona:
             for i in obj.user_persona.all():
                 return i.telefono
         return "" 
+
+    def get_codigo_postal(self, obj):
+        if obj.user_persona:
+            for i in obj.user_persona.all():
+                return i.codigo_postal
+        return ""
+
+    def get_descripcion(self, obj):
+        if obj.user_persona:
+            for i in obj.user_persona.all():
+                return i.descripcion
+        return ""
 
 class ClienteSerializer(serializers.ModelSerializer):
     tipoIdentificacion = serializers.CharField(source = "tipoIdentificacion.descripcion")
@@ -88,6 +112,7 @@ class ClienteSerializer(serializers.ModelSerializer):
             'fecha_nacimiento',
             'edad',
             'direccion',
+            'ciudad',
             'telefono',
             'descuento',
             'obj_user_referenciado',
@@ -120,7 +145,10 @@ class PersonaSerializer(serializers.ModelSerializer):
             'correo_electronico',
             'edad',
             'direccion',
+            'ciudad',
             'telefono',
+            'codigo_postal',
+            'descripcion',
             'get_rol_persona',
         ]
         read_only_fields = ('tipoIdentificacion', 'obj_user',) 
