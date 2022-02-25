@@ -1,3 +1,5 @@
+from ctypes import util
+import utils
 from django.db import models
 from appConfiguracion.models import TipoIndetificacion
 from django.contrib.auth.models import User, Group
@@ -13,6 +15,7 @@ class Cliente(models.Model):
     fecha_nacimiento = models.DateField(verbose_name="Fecha Nacimiento", null=True, blank=True)
     edad = models.IntegerField(verbose_name="Edad", null=True, blank=True)
     direccion = models.CharField(verbose_name="Direccion", max_length=50, null=True, blank=True)
+    ciudad = models.CharField(max_length=80, choices=utils.CIUDADES, null=True, blank=True)
     telefono = models.CharField(verbose_name="Telefono", max_length=50, null=True, blank=True)
     descuento = models.FloatField(verbose_name="Descuento", null=True, blank=True)
     obj_user_referenciado = models.ForeignKey(User, verbose_name="Usuario referenciado", null=True, blank=True, on_delete=models.SET_NULL, related_name="user_cliente")
@@ -43,7 +46,10 @@ class Persona(models.Model):
     correo_electronico = models.EmailField(verbose_name="Email", null=True, blank=True, unique=True)
     edad = models.IntegerField(verbose_name="Edad", null=True, blank=True)
     direccion = models.CharField(max_length=60, null=True, blank=True)
+    ciudad = models.CharField(max_length=80, choices=utils.CIUDADES, null=True, blank=True)
     telefono = models.CharField(max_length=60, null=True, blank=True)
+    codigo_postal = models.CharField(max_length=70, null=True, blank=True)
+    descripcion = models.TextField(null=True, blank=True)
     rol_persona = models.ManyToManyField(Group)
     sys_active = models.BooleanField(default=True)
 
