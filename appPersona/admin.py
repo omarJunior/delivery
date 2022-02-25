@@ -14,6 +14,7 @@ class ClienteAdmin(admin.ModelAdmin):
                     'fecha_nacimiento',
                     'edad',
                     'direccion',
+                    'ciudad',
                     'telefono',
                     'descuento',
                     'obj_user_referenciado',
@@ -29,7 +30,10 @@ class PersonaAdmin(admin.ModelAdmin):
                     'correo_electronico',
                     'edad',
                     'direccion',
+                    'ciudad',
                     'telefono',
+                    'codigo_postal',
+                    'descripcion',
                     'get_rol_persona',
                     'sys_active',)
     list_filter = ('nombres', 'apellidos', 'correo_electronico', 'rol_persona')
