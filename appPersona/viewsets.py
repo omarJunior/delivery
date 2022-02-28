@@ -18,6 +18,12 @@ class ClienteViewSet(viewsets.ModelViewSet):
     queryset = Cliente.objects.all().order_by('id')
     serializer_class = ClienteSerializer
 
+    #cantidad de clientes
+    @action(detail=False, methods=['get'], url_path="get_clientes", url_name="get-clientes")
+    def get_clientes(self, request):
+        clientes = Cliente.objects.all().count()
+        return Response({'clientes': clientes})
+
     #Creacion de un cliente
     @action(detail=False, methods=['post'], url_path="registro-cliente", url_name="registro_cliente")
     def registro_cliente(self, request):
@@ -206,7 +212,7 @@ class UserViewSet(viewsets.ModelViewSet):
         else:
             return qs
 
-    @action(detail=False, methods=['put'], url_path="updated_user", url_name="updated-user")
+    @action(detail=False, methods=['post'], url_path="updated_user", url_name="updated-user")
     def updated_user(self, request):
         id_user = request.data['id']
         username = request.data['username']
@@ -221,7 +227,42 @@ class UserViewSet(viewsets.ModelViewSet):
         telefono = request.data['telefono']
         codigo_postal = request.data['codigo_postal']
         descripcion = request.data['descripcion']
-        return Response({'msg': "xd"})
+
+        #si selecciona el tipo de identificacion
+        try:
+            obj_tipoIdentificacion = TipoIndetificacion.objects.get(descripcion = tipoIdentificacion)
+        except:
+            obj_tipoIdentificacion = TipoIndetificacion.objects.get(pk = tipoIdentificacion)
+
+        try:
+            #Datos de un user en especifico
+            obj_user = User.objects.get(pk = id_user)
+            obj_user.username = username
+            obj_user.email = email
+            obj_user.first_name = first_name
+            obj_user.last_name = last_name
+            obj_user.save()
+
+            #user asociado al modelo de persona
+            obj_persona = Persona.objects.get(obj_user = obj_user)
+            obj_persona.tipoIdentificacion = obj_tipoIdentificacion #<---objeto
+            obj_persona.numeroIdentificacion = numeroIdentificacion
+            obj_persona.nombres = first_name
+            obj_persona.apellidos = last_name
+            obj_persona.correo_electronico = email
+            obj_persona.edad = edad
+            obj_persona.direccion = direccion
+            obj_persona.ciudad = ciudad
+            obj_persona.telefono = telefono
+            obj_persona.codigo_postal = codigo_postal
+            obj_persona.descripcion = descripcion
+            obj_persona.save()
+
+            return Response({'msg': 'Datos actualizados'})
+
+        except:
+            return Response({'error':'Ha ocurrido un error inesperado'})
+
 
 
 
