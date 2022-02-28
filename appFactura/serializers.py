@@ -14,7 +14,8 @@ class FacturaSerializer(serializers.ModelSerializer):
             'obj_cliente',
             'obj_forma_pago',
             'iva',
-            'descuento'
+            'descuento',
+            'total'
             
         ]
         read_only_fields = ('obj_cliente', 'obj_forma_pago',)
