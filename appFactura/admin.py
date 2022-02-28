@@ -4,7 +4,7 @@ from .models import Factura, Producto, Receta
 
 # Register your models here.
 class FacturaAdmin(admin.ModelAdmin):
-    list_display = ('id', 'nro_comprobante', 'fecha', 'obj_cliente', 'iva', 'descuento', 'obj_forma_pago', 'sys_active',)
+    list_display = ('id', 'nro_comprobante', 'fecha', 'obj_cliente', 'obj_forma_pago', 'iva', 'descuento', 'total', 'sys_active',)
     list_filter = ('nro_comprobante', 'obj_cliente',) 
 
 class ProductoAdmin(admin.ModelAdmin):
