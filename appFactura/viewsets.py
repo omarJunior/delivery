@@ -1,5 +1,6 @@
 from django.http.response import HttpResponse
 from rest_framework import viewsets, status, exceptions
+from rest_framework.response import Response
 from rest_framework.decorators import action
 from appPersona.models import Cliente
 from appConfiguracion.models import FormaPago, Rubro, Stock
@@ -18,6 +19,12 @@ from .serializers import (
 class FacturaViewSet(viewsets.ModelViewSet):
     queryset = Factura.objects.all().order_by('id')
     serializer_class = FacturaSerializer
+
+    #cantidad de facturas que existen
+    @action(detail=False, methods=['get'], url_path="get_factura", url_name="get-factura")
+    def get_factura(self, request):
+        facturas = Factura.objects.filter(sys_active = True).count()
+        return Response({'facturas': facturas})
 
     @action(detail = False, methods=['post'], url_path="registro-factura", url_name="registro_factura")
     def registro_factura(self, request):
@@ -41,6 +48,12 @@ class FacturaViewSet(viewsets.ModelViewSet):
 class ProductoViewSet(viewsets.ModelViewSet):
     queryset = Producto.objects.all().order_by('id')
     serializer_class = ProductoSerializer
+
+    #Cantidad de productos que existen
+    @action(detail=False, methods=['get'], url_path="get_productos", name="get-productos")
+    def get_productos(self, request):
+        productos = Producto.objects.filter(sys_active = True).count()
+        return Response({'productos': productos})
 
     @action(detail=False, methods=['post'], url_path="register-producto", url_name="register_producto")
     def register_producto(self, request):
@@ -71,7 +84,6 @@ class ProductoViewSet(viewsets.ModelViewSet):
         producto.save()
 
     
-
 class RecetaViewSet(viewsets.ModelViewSet):
     queryset = Receta.objects.all().order_by('id')
     serializer_class = RecetaSerializer
