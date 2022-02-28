@@ -34,7 +34,7 @@ class Cliente(models.Model):
         verbose_name_plural = "Clientes"
 
     def __str__(self):
-        return self.codigo + " " + self.get_full_name
+        return self.get_full_name
 
 #Hacer referencia al auth user
 class Persona(models.Model):
