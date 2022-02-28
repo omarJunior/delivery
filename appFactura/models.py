@@ -12,6 +12,7 @@ class Factura(models.Model):
     obj_forma_pago = models.ForeignKey(FormaPago, verbose_name="Forma de pago", null=True, blank=True, on_delete=models.SET_NULL, related_name="cliente_pago")
     iva = models.FloatField(null=True, blank=True)
     descuento = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    total = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     sys_active = models.BooleanField(default=True)
     sys_fechaCreacion = models.DateTimeField(auto_now_add=True)
     sys_fechaActualizacion = models.DateTimeField(auto_now = True)
@@ -22,7 +23,7 @@ class Factura(models.Model):
         verbose_name_plural = "Facturas"
 
     def __str__(self):
-        return self.nro_comprobante +  " " + self.obj_cliente
+        return self.nro_comprobante +  " " + str(self.obj_cliente)
 
 class Producto(models.Model):
     descripcion = models.CharField(max_length=80, null=True, blank=True)
