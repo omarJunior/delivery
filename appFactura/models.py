@@ -9,7 +9,7 @@ class Factura(models.Model):
     nro_comprobante = models.CharField(max_length=100, null=True, blank=True)
     fecha = models.DateField(auto_now=True,null=True, blank=True)
     obj_cliente = models.ForeignKey(Cliente, verbose_name="Cliente", null=True, blank=True, on_delete=models.SET_NULL, related_name="cliente_factura")
-    obj_forma_pago = models.ForeignKey(FormaPago, verbose_name="Forma de pago", null=True, blank=True, on_delete=models.SET_NULL, related_name="cliente_pago")
+    obj_forma_pago = models.ForeignKey(FormaPago, verbose_name="Forma de pago", null=True, blank=True, on_delete=models.SET_NULL, related_name="pago_factura")
     iva = models.FloatField(null=True, blank=True)
     descuento = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     total = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
@@ -59,4 +59,4 @@ class Receta(models.Model):
         verbose_name_plural = "Recetas"
 
     def __str__(self):
-        return self.obj_ingrediente + " " + self.obj_producto
+        return str(self.obj_ingrediente) + " " + str(self.obj_producto)
