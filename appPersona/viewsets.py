@@ -139,7 +139,8 @@ class ApiCustomAuthToken(APIView):
         password = request.data.get("password")
 
         if username is None or password is None:
-            raise exceptions.AuthenticationFailed("Se debe enviar un nombre de usuario y contraseña válido")
+            return Response({'error': 'Se debe enviar un nombre de usuario y contraseña válido'})
+            #raise exceptions.AuthenticationFailed("Se debe enviar un nombre de usuario y contraseña válido")
         
         user = authenticate(
             username = username,
@@ -150,10 +151,7 @@ class ApiCustomAuthToken(APIView):
                 #generamos el token
                 refresh = RefreshToken.for_user(user)
                 persona = Persona.objects.filter(obj_user = user.pk).values('id', 'tipoIdentificacion', 'numeroIdentificacion').first()
-                try:
-                    id_persona = persona.get('id')
-                except:
-                    id_persona = ""
+                
                 try:
                     tipo_identificacion = persona.get('tipoIndentificacion')
                 except:
