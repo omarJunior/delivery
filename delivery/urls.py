@@ -15,10 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from delivery.api_urls import urlpatterns as urlsApi
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_auth.views import PasswordResetConfirmView
+from delivery.api_urls import urlpatterns as urlsApi
 
 urlpatterns = [
     path('jet/', include('jet.urls', 'jet')), #Django JET URLS
