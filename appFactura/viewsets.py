@@ -29,22 +29,58 @@ class FacturaViewSet(viewsets.ModelViewSet):
 
     @action(detail = False, methods=['post'], url_path="register_factura", url_name="register-factura")
     def registro_factura(self, request):
-        nro_comprobante = request.data['nro_comprobante']
-        fecha = request.data['fecha']
-        id_cliente = request.data['id_cliente']
-        id_forma_pago = request.data['id_forma_pago']
-        iva = request.data['iva']
-        descuento = request.data['descuento']
+        try:
+            nro_comprobante = request.data['nro_comprobante']
+        except:
+            nro_comprobante = None
+        try:
+            fecha = request.data['fecha']
+        except:
+            fecha = None
+        try:
+            id_cliente = request.data['id_cliente']
+        except:
+            id_cliente = None
+        try:
+            id_forma_pago = request.data['id_forma_pago']
+        except:
+            id_forma_pago = None
+
+        try:
+            iva = request.data['iva']
+        except:
+            iva = None
+        try:
+            descuento = request.data['descuento']
+        except:
+            descuento = None
+
+        try:
+            total = request.data['total']
+        except:
+            total = None
+    
         factura_obj = Factura()
-        factura_obj.nro_comprobante = nro_comprobante
-        factura_obj.fecha = fecha
-        factura_obj.obj_cliente = Cliente()
-        factura_obj.obj_cliente.id = id_cliente
-        factura_obj.obj_forma_pago = FormaPago()
-        factura_obj.obj_forma_pago.id = id_forma_pago
-        factura_obj.iva = iva
-        factura_obj.descuento = descuento
+        if nro_comprobante is not None:
+            factura_obj.nro_comprobante = nro_comprobante
+        if fecha is not None:
+            factura_obj.fecha = fecha
+        if id_cliente is not None:
+            factura_obj.obj_cliente = Cliente()
+            factura_obj.obj_cliente.id = id_cliente
+        if id_forma_pago is not None:
+            factura_obj.obj_forma_pago = FormaPago()
+            factura_obj.obj_forma_pago.id = id_forma_pago
+        if iva is not None:
+            factura_obj.iva = iva
+        if descuento is not None:
+            factura_obj.descuento = descuento
+        if total is not None:
+            factura_obj.total = total
+            
         factura_obj.save()
+        
+        return Response({'msg': 'Datos guardados correctamente'})
 
     #total money factura
     @action(detail=False, methods=['get'], url_path="get_total", url_name="get-total")
