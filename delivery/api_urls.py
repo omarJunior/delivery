@@ -1,15 +1,10 @@
 from django.urls import path, include
-from appConfiguracion.urls import router as appRutesConfiguracion
-from appFactura.urls import router as appRoutesFactura
-from appPersona.urls import router as appRoutesPersona
-
-
 from appPersona.viewsets import ApiCustomAuthToken
 
 #Url de la apiRest
 urlpatterns = [
-    path("appConfiguracion/", include(appRutesConfiguracion.urls)),
-    path('appFactura/', include(appRoutesFactura.urls)),
-    path('appPersona/', include(appRoutesPersona.urls)),
+    path("appConfiguracion/", include('appConfiguracion.routers')),
+    path('appFactura/', include('appFactura.routers')),
+    path('appPersona/', include('appPersona.routers')),
     path('auth-user/', ApiCustomAuthToken.as_view()),
 ]
