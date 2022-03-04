@@ -106,6 +106,7 @@ class ClienteSerializer(serializers.ModelSerializer):
             'codigo',
             'tipoIdentificacion',
             'numeroIdentificacion',
+            'get_full_name',
             'nombres',
             'apellidos',
             'correo_electronico',
