@@ -1,5 +1,10 @@
 from rest_framework import serializers
 from .models import Factura, Producto, Receta
+from rest_framework import pagination
+
+class PaginationSerializer(pagination.PageNumberPagination):
+    page_size = 10
+    max_page_size = 100
 
 class FacturaSerializer(serializers.ModelSerializer):
     obj_cliente = serializers.SerializerMethodField(method_name="get_full_name")

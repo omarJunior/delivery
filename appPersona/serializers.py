@@ -1,6 +1,10 @@
 from rest_framework import serializers
+from rest_framework import pagination
 from .models import Cliente, Persona, User
 
+class PaginationSerializer(pagination.PageNumberPagination):
+    page_size = 10
+    max_page_size = 100
 
 class UserSerializers(serializers.ModelSerializer):
     grupo = serializers.SerializerMethodField(method_name="get_name_grupo")
@@ -45,7 +49,8 @@ class UserSerializers(serializers.ModelSerializer):
         if obj.groups:
             for i in obj.groups.all():
                 name = name + i.name
-        return name
+            return name
+        return ""
         
     def get_tipo_identificacion(self, obj):
         if obj.user_persona:

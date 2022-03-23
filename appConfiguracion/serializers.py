@@ -1,5 +1,10 @@
 from rest_framework import serializers
 from .models import TipoIndetificacion, Rubro, Stock, Ingrediente, FormaPago
+from rest_framework import pagination
+
+class PaginationSerializer(pagination.PageNumberPagination):
+    page_size = 10
+    max_page_size = 50
 
 class TipoIdentificacionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -17,7 +22,7 @@ class StockSerializer(serializers.ModelSerializer):
         fields = ('__all__')
 
 class IngredienteSerializer(serializers.ModelSerializer):
-    obj_stock = serializers.SerializerMethodField(method_name="get_stock")
+    obj_stock = StockSerializer(many=False, read_only= True)
 
     class Meta:
         model = Ingrediente
@@ -29,12 +34,6 @@ class IngredienteSerializer(serializers.ModelSerializer):
             'costo',
             'obj_stock'
         ]
-        read_only_fields = ('obj_stock',) 
-
-    def get_stock(self, obj):
-        if obj.obj_stock:
-            return f"Stock Maximo {obj.obj_stock.stock}, Stock Minimo {obj.obj_stock.stock_minimo}" 
-        return ""
 
 class FormaPagoSerializer(serializers.ModelSerializer):
     class Meta:

@@ -12,11 +12,17 @@ from django.contrib.auth.hashers import make_password
 from appConfiguracion.models import TipoIndetificacion
 
 from .models import Cliente, Persona
-from .serializers import ClienteSerializer, PersonaSerializer, UserSerializers
+from .serializers import (
+    ClienteSerializer, 
+    PersonaSerializer, 
+    UserSerializers, 
+    PaginationSerializer
+)
 
 class ClienteViewSet(viewsets.ModelViewSet):
     queryset = Cliente.objects.all().order_by('id')
     serializer_class = ClienteSerializer
+    pagination_class = PaginationSerializer
 
     #cantidad de clientes
     @action(detail=False, methods=['get'], url_path="get_clientes", url_name="get-clientes")
@@ -60,6 +66,7 @@ class ClienteViewSet(viewsets.ModelViewSet):
 class PersonaViewSet(viewsets.ModelViewSet):
     queryset = Persona.objects.all().order_by('id')
     serializer_class = PersonaSerializer
+    pagination_class = PaginationSerializer
     
     @action(detail=False, methods=['get'], url_path="get_grupos", url_name="get-grupos", permission_classes = (AllowAny, ))
     def get_grupos(self, request):
@@ -150,7 +157,7 @@ class ApiCustomAuthToken(APIView):
             if user.is_active:
                 #generamos el token
                 refresh = RefreshToken.for_user(user)
-                persona = Persona.objects.filter(obj_user = user.pk).values('id', 'tipoIdentificacion', 'numeroIdentificacion').first()
+                persona = Persona.objects.filter(obj_user = user).values('id', 'tipoIdentificacion', 'numeroIdentificacion').first()
                 
                 try:
                     tipo_identificacion = persona.get('tipoIndentificacion')
@@ -182,7 +189,7 @@ class ApiCustomAuthToken(APIView):
 
     def get(self, request, format=None):
         if request.user.is_authenticated:
-            persona = Persona.objects.filter(obj_user = request.user.pk).values('id').first()
+            persona = Persona.objects.filter(obj_user = request.user).values('id').first()
             try:
                 id_persona = persona.get('id')
             except:
@@ -205,10 +212,8 @@ class UserViewSet(viewsets.ModelViewSet):
         qs = User.objects.all().order_by('-is_active')
         id = self.request.query_params.get('id_user')
         if id is not None:
-            qs = qs.filter(pk = id)
-            return qs
-        else:
-            return qs
+            qs = qs.filter(id = id)
+        return qs
 
     @action(detail=False, methods=['post'], url_path="updated_user", url_name="updated-user")
     def updated_user(self, request):
@@ -230,11 +235,11 @@ class UserViewSet(viewsets.ModelViewSet):
         try:
             obj_tipoIdentificacion = TipoIndetificacion.objects.get(descripcion = tipoIdentificacion)
         except:
-            obj_tipoIdentificacion = TipoIndetificacion.objects.get(pk = tipoIdentificacion)
+            obj_tipoIdentificacion = TipoIndetificacion.objects.get(id = tipoIdentificacion)
 
         try:
             #Datos de un user en especifico
-            obj_user = User.objects.get(pk = id_user)
+            obj_user = User.objects.get(id = id_user)
             obj_user.username = username
             obj_user.email = email
             obj_user.first_name = first_name

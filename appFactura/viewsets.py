@@ -15,11 +15,13 @@ from .serializers import (
     FacturaSerializer,
     ProductoSerializer,
     RecetaSerializer,
+    PaginationSerializer
 )
 
 class FacturaViewSet(viewsets.ModelViewSet):
     queryset = Factura.objects.filter(sys_active = True).order_by('id')
     serializer_class = FacturaSerializer
+    pagination_class = PaginationSerializer
 
     #cantidad de facturas que existen
     @action(detail=False, methods=['get'], url_path="get_factura", url_name="get-factura")
@@ -95,6 +97,7 @@ class FacturaViewSet(viewsets.ModelViewSet):
 class ProductoViewSet(viewsets.ModelViewSet):
     queryset = Producto.objects.filter(sys_active = True).order_by('id')
     serializer_class = ProductoSerializer
+    pagination_class = PaginationSerializer
 
     #cantidad de productos que existen
     @action(detail=False, methods=['get'], url_path="get_productos", name="get-productos")
@@ -166,3 +169,4 @@ class ProductoViewSet(viewsets.ModelViewSet):
 class RecetaViewSet(viewsets.ModelViewSet):
     queryset = Receta.objects.all().order_by('id')
     serializer_class = RecetaSerializer
+    pagination_class = PaginationSerializer
